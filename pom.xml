@@ -12,7 +12,7 @@
 	<artifactId>hospital_api</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>hospital_api</name>
-	<description>Project for a model Hospital RESTful API</description>
+	<description>Project for a RESTful API Hospital model</description>
 	<properties>
 		<java.version>17</java.version>
 	</properties>
@@ -68,6 +68,19 @@
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+
+		<dependency>
+			<groupId>com.auth0</groupId>
+			<artifactId>java-jwt</artifactId>
+			<version>4.4.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+			<version>2.5.0</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
