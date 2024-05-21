@@ -3,6 +3,7 @@ package com.hospital_api.infra.security;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.hospital_api.domain.user.User;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -26,7 +27,7 @@ public class TokenService {
                     .withExpiresAt(expirationDate())
                     .sign(algorithm);
         } catch (JWTCreationException e) {
-            throw new RuntimeException("Token JWT: GENERATE TOKEN ERROR", e);
+            throw new RuntimeException("JWT Token: GENERATE TOKEN ERROR", e);
         }
     }
 
@@ -34,4 +35,16 @@ public class TokenService {
         return LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.of("-03:00"));
     }
 
+    public String getSubject(String tokenJWT) {
+        try {
+            Algorithm algorithm = Algorithm.HMAC256(secret);
+            return JWT.require(algorithm)
+                    .withIssuer("API Hospital")
+                    .build()
+                    .verify(tokenJWT)
+                    .getSubject();
+        } catch (JWTVerificationException e) {
+            throw new RuntimeException("Invalid/Expired JWT Token", e);
+        }
+    }
 }
