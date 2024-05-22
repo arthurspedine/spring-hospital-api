@@ -47,7 +47,7 @@ public class AuthenticateController {
             return ResponseEntity.badRequest().build();
 
         String encryptedPassword = encoder.encode(data.password());
-        User newUser = new User(null, data.login(), encryptedPassword, data.role());
+        User newUser = new User(null, data.login(), encryptedPassword, data.role(), null);
 
         repository.save(newUser);
         return ResponseEntity.ok().body("User created successfully!");

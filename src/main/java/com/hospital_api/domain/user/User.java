@@ -1,5 +1,6 @@
 package com.hospital_api.domain.user;
 
+import com.hospital_api.domain.employee.Employee;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -29,6 +30,9 @@ public class User implements UserDetails {
 
     @Enumerated(EnumType.STRING)
     private UserRole role;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Employee employee;
 
 
     @Override
