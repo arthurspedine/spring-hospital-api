@@ -42,9 +42,14 @@ public class RestExceptionHandler {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ExceptionData("Access denied!"));
     }
 
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity runtimeExceptionError(RuntimeException e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ExceptionData(e.getLocalizedMessage()));
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity exceptionError(Exception ex) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Exception(ex.getLocalizedMessage()));
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ExceptionData(ex.getLocalizedMessage()));
     }
 
     private record ExceptionData(

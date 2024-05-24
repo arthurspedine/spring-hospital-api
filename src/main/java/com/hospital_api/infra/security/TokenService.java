@@ -27,7 +27,7 @@ public class TokenService {
                     .withExpiresAt(expirationDate())
                     .sign(algorithm);
         } catch (JWTCreationException e) {
-            throw new RuntimeException("JWT Token: GENERATE TOKEN ERROR", e);
+            throw new RuntimeException("JWT Token: GENERATE TOKEN");
         }
     }
 
@@ -44,7 +44,7 @@ public class TokenService {
                     .verify(tokenJWT)
                     .getSubject();
         } catch (JWTVerificationException e) {
-            throw new RuntimeException("Invalid/Expired JWT Token", e);
+            throw new RuntimeException("JWT Token: Invalid/Expired! " + e.getLocalizedMessage());
         }
     }
 }

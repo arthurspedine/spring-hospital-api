@@ -1,5 +1,6 @@
 package com.hospital_api.domain.employee;
 
+import com.hospital_api.domain.Person;
 import com.hospital_api.domain.user.User;
 import jakarta.persistence.*;
 import lombok.*;
@@ -10,18 +11,13 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(of = "id")
+@EqualsAndHashCode(of = "id", callSuper = false)
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class Employee {
+public abstract class Employee extends Person {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    private String name;
-
-    @Column(length = 14, nullable = false)
-    private String cpf;
 
     @Enumerated(EnumType.STRING)
     private EmployeeType type;
@@ -29,4 +25,5 @@ public abstract class Employee {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
+
 }
