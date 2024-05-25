@@ -7,6 +7,9 @@ import com.hospital_api.service.ReceptionistService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -33,6 +36,11 @@ public class ReceptionistController {
     @GetMapping("/{id}")
     public ResponseEntity<ReceptionistDetailDTO> medicDetail(@PathVariable Long id) {
         return ResponseEntity.ok(new ReceptionistDetailDTO(service.getReceptionistById(id)));
+    }
+
+    @GetMapping
+    public ResponseEntity<Page<ReceptionistDetailDTO>> listAllReceptionists(@PageableDefault(sort = "name") Pageable page) {
+        return ResponseEntity.ok(service.getAllReceptionists(page));
     }
 
 }

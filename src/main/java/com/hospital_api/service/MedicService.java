@@ -1,15 +1,18 @@
 package com.hospital_api.service;
 
-import com.hospital_api.domain.ValidationException;
 import com.hospital_api.domain.employee.EmployeeType;
 import com.hospital_api.domain.employee.medic.MedicRequestDTO;
 import com.hospital_api.domain.employee.medic.Medic;
 import com.hospital_api.domain.employee.validations.medic.MedicValidationHandler;
 import com.hospital_api.domain.user.User;
 import com.hospital_api.domain.user.UserRole;
+import com.hospital_api.dto.employee.medic.MedicDetailDTO;
 import com.hospital_api.repository.MedicRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -49,5 +52,9 @@ public class MedicService {
 
     public Medic getMedicById(Long id) {
         return repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Medic not found!"));
+    }
+
+    public Page<MedicDetailDTO> getAllMedics(Pageable page) {
+        return repository.findAll(page).map(MedicDetailDTO::new);
     }
 }
