@@ -1,5 +1,6 @@
 package com.hospital_api.controller;
 
+import com.hospital_api.domain.ValidationException;
 import com.hospital_api.domain.user.User;
 import com.hospital_api.dto.authenticate.LoginRequestDTO;
 import com.hospital_api.dto.authenticate.AuthResponseDTO;
@@ -44,7 +45,7 @@ public class AuthenticateController {
     @PostMapping("/register") // just ADMIN role can release this method
     public ResponseEntity register(@RequestBody @Valid RegisterDTO data) {
         if (repository.findByLogin(data.login()) != null) // valid unique user
-            return ResponseEntity.badRequest().build();
+            throw new ValidationException("There is already a record with the same Login provided.");
 
         String encryptedPassword = encoder.encode(data.password());
         User newUser = new User(null, data.login(), encryptedPassword, data.role(), null);

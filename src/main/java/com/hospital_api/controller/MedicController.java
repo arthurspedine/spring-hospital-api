@@ -1,5 +1,6 @@
 package com.hospital_api.controller;
 
+import com.hospital_api.domain.ValidationException;
 import com.hospital_api.domain.employee.EmployeeType;
 import com.hospital_api.domain.employee.MedicRequestDTO;
 import com.hospital_api.domain.employee.medic.Medic;
@@ -7,10 +8,12 @@ import com.hospital_api.domain.user.User;
 import com.hospital_api.domain.user.UserRole;
 import com.hospital_api.dto.employee.medic.MedicDetailDTO;
 import com.hospital_api.repository.MedicRepository;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +23,7 @@ import java.net.URI;
 
 @RestController
 @RequestMapping("/employee/medic")
+@SecurityRequirement(name = "bearer-key")
 public class MedicController {
 
     @Autowired
@@ -31,9 +35,11 @@ public class MedicController {
     @PostMapping
     @Transactional
     public ResponseEntity createMedic(@RequestBody @Valid MedicRequestDTO data, UriComponentsBuilder uriBuilder) {
-        if (repository.findByCrm(data.crm()).isPresent() || repository.existsUserByLogin(data.login()).isPresent()) {
-            return ResponseEntity.badRequest().build();
-        }
+        if (repository.findByCrm(data.crm()).isPresent())
+            throw new ValidationException("There is already a medic with the same CRM provided.");
+        if (repository.existsUserByLogin(data.login()).isPresent())
+            throw new ValidationException("There is already a medic with the same Login provided.");
+
         Medic medic = new Medic();
         medic.setName(data.name());
         medic.setCpf(data.cpf());
