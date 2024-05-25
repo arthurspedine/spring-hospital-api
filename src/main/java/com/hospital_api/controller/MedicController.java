@@ -1,21 +1,14 @@
 package com.hospital_api.controller;
 
-import com.hospital_api.domain.ValidationException;
-import com.hospital_api.domain.employee.EmployeeType;
 import com.hospital_api.domain.employee.MedicRequestDTO;
 import com.hospital_api.domain.employee.medic.Medic;
-import com.hospital_api.domain.user.User;
-import com.hospital_api.domain.user.UserRole;
 import com.hospital_api.dto.employee.medic.MedicDetailDTO;
-import com.hospital_api.repository.MedicRepository;
+import com.hospital_api.service.MedicService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -27,31 +20,12 @@ import java.net.URI;
 public class MedicController {
 
     @Autowired
-    private PasswordEncoder encoder;
-
-    @Autowired
-    private MedicRepository repository;
+    private MedicService service;
 
     @PostMapping
     @Transactional
-    public ResponseEntity createMedic(@RequestBody @Valid MedicRequestDTO data, UriComponentsBuilder uriBuilder) {
-        if (repository.findByCrm(data.crm()).isPresent())
-            throw new ValidationException("There is already a medic with the same CRM provided.");
-        if (repository.existsUserByLogin(data.login()).isPresent())
-            throw new ValidationException("There is already a medic with the same Login provided.");
-
-        Medic medic = new Medic();
-        medic.setName(data.name());
-        medic.setCpf(data.cpf());
-        medic.setCrm(data.crm());
-        medic.setSpecialty(data.specialty());
-        medic.setType(EmployeeType.MEDIC);
-
-        String encryptedPassword = encoder.encode(data.password());
-        User user = new User(null, data.login(), encryptedPassword, UserRole.ADMIN, medic);
-
-        medic.setUser(user);
-        repository.save(medic);
+    public ResponseEntity<MedicDetailDTO> createMedic(@RequestBody @Valid MedicRequestDTO data, UriComponentsBuilder uriBuilder) {
+        Medic medic = service.saveMedic(data);
 
         URI uri = uriBuilder.path("/employee/medic/{id}").buildAndExpand(medic.getId()).toUri();
 
@@ -60,8 +34,6 @@ public class MedicController {
 
     @GetMapping("/{id}")
     public ResponseEntity<MedicDetailDTO> medicDetail(@PathVariable Long id) {
-        Medic medic = repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Medic not found!"));
-        MedicDetailDTO response = new MedicDetailDTO(medic);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(new MedicDetailDTO(service.getMedicById(id)));
     }
 }
