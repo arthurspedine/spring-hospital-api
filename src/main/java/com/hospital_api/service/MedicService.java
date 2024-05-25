@@ -2,8 +2,9 @@ package com.hospital_api.service;
 
 import com.hospital_api.domain.ValidationException;
 import com.hospital_api.domain.employee.EmployeeType;
-import com.hospital_api.domain.employee.MedicRequestDTO;
+import com.hospital_api.domain.employee.medic.MedicRequestDTO;
 import com.hospital_api.domain.employee.medic.Medic;
+import com.hospital_api.domain.employee.validations.medic.MedicValidationHandler;
 import com.hospital_api.domain.user.User;
 import com.hospital_api.domain.user.UserRole;
 import com.hospital_api.repository.MedicRepository;
@@ -11,6 +12,8 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class MedicService {
@@ -21,12 +24,12 @@ public class MedicService {
     @Autowired
     private MedicRepository repository;
 
+    @Autowired
+    private List<MedicValidationHandler> validations;
+
 
     public Medic saveMedic(MedicRequestDTO data) {
-        if (repository.findByCrm(data.crm()).isPresent())
-            throw new ValidationException("There is already a medic with the same CRM provided.");
-        if (repository.existsUserByLogin(data.login()).isPresent())
-            throw new ValidationException("There is already a medic with the same Login provided.");
+        validations.forEach(v -> v.validate(data));
 
         Medic medic = new Medic();
         medic.setName(data.name());

@@ -1,6 +1,5 @@
-package com.hospital_api.domain.employee;
+package com.hospital_api.domain.employee.medic;
 
-import com.hospital_api.domain.employee.medic.MedicSpecialty;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;

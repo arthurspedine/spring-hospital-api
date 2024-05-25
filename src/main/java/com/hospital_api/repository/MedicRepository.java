@@ -9,9 +9,4 @@ import java.util.Optional;
 public interface MedicRepository extends JpaRepository<Medic, Long> {
     Optional<Medic> findByCrm(String crm);
 
-    @Query("""
-    select m from Medics m
-    where m.user.login = :login
-    """)
-    Optional<Medic> existsUserByLogin(String login);
 }

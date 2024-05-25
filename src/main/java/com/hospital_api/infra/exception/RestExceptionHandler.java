@@ -18,8 +18,8 @@ import java.util.List;
 public class RestExceptionHandler {
 
     @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity entityNotFoundException() {
-        return ResponseEntity.notFound().build();
+    public ResponseEntity entityNotFoundException(EntityNotFoundException e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ExceptionData(e.getMessage()));
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

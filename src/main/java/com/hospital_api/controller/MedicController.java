@@ -1,6 +1,6 @@
 package com.hospital_api.controller;
 
-import com.hospital_api.domain.employee.MedicRequestDTO;
+import com.hospital_api.domain.employee.medic.MedicRequestDTO;
 import com.hospital_api.domain.employee.medic.Medic;
 import com.hospital_api.dto.employee.medic.MedicDetailDTO;
 import com.hospital_api.service.MedicService;
