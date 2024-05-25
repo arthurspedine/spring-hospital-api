@@ -4,6 +4,7 @@ import com.hospital_api.domain.employee.receptionist.Receptionist;
 import com.hospital_api.domain.employee.receptionist.ReceptionistRequestDTO;
 import com.hospital_api.dto.employee.receptionist.ReceptionistDetailDTO;
 import com.hospital_api.service.ReceptionistService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import java.net.URI;
 
 @RestController
 @RequestMapping("/employee/receptionist")
+@SecurityRequirement(name = "bearer-key")
 public class ReceptionistController {
 
     @Autowired
