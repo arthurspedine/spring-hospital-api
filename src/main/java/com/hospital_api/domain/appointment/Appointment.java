@@ -6,8 +6,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Table(name = "appointments")
 @Entity(name = "Appointments")
@@ -32,7 +32,7 @@ public class Appointment {
             joinColumns = @JoinColumn(name = "appointment_id"),
             inverseJoinColumns = @JoinColumn(name = "medic_id")
     )
-    private Set<Medic> medics = new HashSet<>();
+    private List<Medic> medics = new ArrayList<>();
 
     private LocalDateTime dateTime;
 
