@@ -1,6 +1,7 @@
 package com.hospital_api.domain.user;
 
 import com.hospital_api.domain.employee.Employee;
+import com.hospital_api.domain.pacient.Pacient;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -33,6 +34,23 @@ public class User implements UserDetails {
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Employee employee;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Pacient pacient;
+
+    public User(String login, String password, UserRole role, Employee employee) {
+        this.login = login;
+        this.password = password;
+        this.role = role;
+        this.employee = employee;
+    }
+    public User(String login, String password, UserRole role, Pacient pacient) {
+        this.login = login;
+        this.password = password;
+        this.role = role;
+        this.pacient = pacient;
+    }
+
 
 
     @Override

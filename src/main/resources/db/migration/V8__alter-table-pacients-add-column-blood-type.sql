@@ -1,0 +1,1 @@
+ALTER TABLE pacients ADD blood_type VARCHAR(2) NOT NULL;
