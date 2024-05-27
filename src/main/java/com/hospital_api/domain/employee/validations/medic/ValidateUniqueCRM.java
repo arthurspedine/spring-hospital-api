@@ -1,7 +1,7 @@
 package com.hospital_api.domain.employee.validations.medic;
 
 import com.hospital_api.domain.ValidationException;
-import com.hospital_api.domain.employee.medic.MedicRequestDTO;
+import com.hospital_api.dto.employee.medic.MedicRequestDTO;
 import com.hospital_api.repository.MedicRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

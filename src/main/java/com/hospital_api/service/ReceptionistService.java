@@ -2,7 +2,7 @@ package com.hospital_api.service;
 
 import com.hospital_api.domain.employee.EmployeeType;
 import com.hospital_api.domain.employee.receptionist.Receptionist;
-import com.hospital_api.domain.employee.receptionist.ReceptionistRequestDTO;
+import com.hospital_api.dto.employee.receptionist.ReceptionistRequestDTO;
 import com.hospital_api.domain.employee.validations.receptionist.ReceptionistValidationHandler;
 import com.hospital_api.domain.user.User;
 import com.hospital_api.domain.user.UserRole;
@@ -39,7 +39,7 @@ public class ReceptionistService {
         receptionist.setType(EmployeeType.RECEPTIONIST);
 
         String encryptedPassword = encoder.encode(data.password());
-        User user = new User(null, data.login(), encryptedPassword, UserRole.ADMIN, receptionist);
+        User user = new User(data.login(), encryptedPassword, UserRole.ADMIN, receptionist);
 
         receptionist.setUser(user);
         repository.save(receptionist);

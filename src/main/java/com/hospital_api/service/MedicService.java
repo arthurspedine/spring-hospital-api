@@ -1,7 +1,7 @@
 package com.hospital_api.service;
 
 import com.hospital_api.domain.employee.EmployeeType;
-import com.hospital_api.domain.employee.medic.MedicRequestDTO;
+import com.hospital_api.dto.employee.medic.MedicRequestDTO;
 import com.hospital_api.domain.employee.medic.Medic;
 import com.hospital_api.domain.employee.validations.medic.MedicValidationHandler;
 import com.hospital_api.domain.user.User;
@@ -41,7 +41,7 @@ public class MedicService {
         medic.setType(EmployeeType.MEDIC);
 
         String encryptedPassword = encoder.encode(data.password());
-        User user = new User(null, data.login(), encryptedPassword, UserRole.ADMIN, medic);
+        User user = new User(data.login(), encryptedPassword, UserRole.ADMIN, medic);
 
         medic.setUser(user);
         repository.save(medic);

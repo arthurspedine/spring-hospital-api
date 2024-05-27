@@ -1,8 +1,8 @@
 package com.hospital_api.domain.employee.validations;
 
 import com.hospital_api.domain.ValidationException;
-import com.hospital_api.domain.employee.medic.MedicRequestDTO;
-import com.hospital_api.domain.employee.receptionist.ReceptionistRequestDTO;
+import com.hospital_api.dto.employee.medic.MedicRequestDTO;
+import com.hospital_api.dto.employee.receptionist.ReceptionistRequestDTO;
 import com.hospital_api.domain.employee.validations.medic.MedicValidationHandler;
 import com.hospital_api.domain.employee.validations.receptionist.ReceptionistValidationHandler;
 import com.hospital_api.repository.EmployeeRepository;

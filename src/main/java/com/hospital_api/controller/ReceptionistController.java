@@ -1,7 +1,7 @@
 package com.hospital_api.controller;
 
 import com.hospital_api.domain.employee.receptionist.Receptionist;
-import com.hospital_api.domain.employee.receptionist.ReceptionistRequestDTO;
+import com.hospital_api.dto.employee.receptionist.ReceptionistRequestDTO;
 import com.hospital_api.dto.employee.receptionist.ReceptionistDetailDTO;
 import com.hospital_api.service.ReceptionistService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
