@@ -7,6 +7,8 @@ import com.hospital_api.service.AppointmentService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -31,7 +33,15 @@ public class AppointmentController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<AppointmentDetailDTO> scheduleDetail(@PathVariable Long id) {
-        return ResponseEntity.ok(new AppointmentDetailDTO(service.getAppointment(id)));
+    public ResponseEntity<AppointmentDetailDTO> scheduleDetail(
+            @PathVariable Long id,
+            @RequestHeader(HttpHeaders.AUTHORIZATION) String authHeader) {
+
+        if (authHeader == null || !authHeader.startsWith("Bearer "))
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        Appointment appointment = service.getAppointment(id, authHeader);
+        return appointment != null ?
+                ResponseEntity.ok(new AppointmentDetailDTO(appointment)) :
+                ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 }

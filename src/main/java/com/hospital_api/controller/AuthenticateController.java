@@ -1,10 +1,9 @@
 package com.hospital_api.controller;
 
 import com.hospital_api.domain.user.User;
-import com.hospital_api.dto.authenticate.LoginRequestDTO;
 import com.hospital_api.dto.authenticate.AuthResponseDTO;
+import com.hospital_api.dto.authenticate.LoginRequestDTO;
 import com.hospital_api.infra.security.TokenService;
-import com.hospital_api.repository.UserRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,9 +21,6 @@ public class AuthenticateController {
 
     @Autowired
     private TokenService service;
-
-    @Autowired
-    private UserRepository repository;
 
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody @Valid LoginRequestDTO data) {

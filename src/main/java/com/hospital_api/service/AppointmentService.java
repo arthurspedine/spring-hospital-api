@@ -5,11 +5,15 @@ import com.hospital_api.domain.appointment.Appointment;
 import com.hospital_api.domain.employee.medic.Medic;
 import com.hospital_api.domain.pacient.Pacient;
 import com.hospital_api.dto.appointment.AppointmentRequestDTO;
+import com.hospital_api.infra.security.TokenService;
 import com.hospital_api.repository.AppointmentRepository;
 import com.hospital_api.repository.MedicRepository;
 import com.hospital_api.repository.PacientRepository;
+import com.hospital_api.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -27,6 +31,12 @@ public class AppointmentService {
 
     @Autowired
     private AppointmentRepository appointmentRepository;
+
+    @Autowired
+    private TokenService service;
+
+    @Autowired
+    private UserRepository userRepository;
 
     public Appointment scheduleAppointment(AppointmentRequestDTO data) {
         Pacient pacient = pacientRepository.findById(data.pacientId()).orElseThrow(() -> new EntityNotFoundException("Pacient not found!"));
@@ -49,7 +59,21 @@ public class AppointmentService {
         return appointment;
     }
 
-    public Appointment getAppointment(Long id) {
-        return appointmentRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Appointment not found!"));
+    public Appointment getAppointment(Long id, String header) {
+        String login = service.getSubject(header.replace("Bearer ", ""));
+
+        UserDetails user = userRepository.findByLogin(login);
+
+        Appointment appointment = appointmentRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Appointment not found!"));
+
+        // CHECK IF IS ADMIN
+        boolean isAdmin = user.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .anyMatch("ROLE_ADMIN"::equals);
+        if (appointment.getPacient().getUser().getLogin().equals(user.getUsername()) ||
+            isAdmin) {
+            return appointment;
+        }
+        return null;
     }
 }
