@@ -2,6 +2,7 @@ package com.hospital_api.controller;
 
 import com.hospital_api.domain.appointment.Appointment;
 import com.hospital_api.dto.appointment.AppointmentDetailDTO;
+import com.hospital_api.dto.appointment.AppointmentEditDTO;
 import com.hospital_api.dto.appointment.AppointmentRequestDTO;
 import com.hospital_api.service.AppointmentService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -45,5 +46,12 @@ public class AppointmentController {
         return appointment != null ?
                 ResponseEntity.ok(new AppointmentDetailDTO(appointment)) :
                 ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    }
+
+    @PutMapping
+    @Transactional
+    public ResponseEntity<AppointmentDetailDTO> editAppointment(@RequestBody @Valid AppointmentEditDTO data) {
+        Appointment appointment = service.editAppointment(data);
+        return ResponseEntity.ok(new AppointmentDetailDTO(appointment));
     }
 }

@@ -4,6 +4,7 @@ import com.hospital_api.domain.ValidationException;
 import com.hospital_api.domain.appointment.Appointment;
 import com.hospital_api.domain.employee.medic.Medic;
 import com.hospital_api.domain.pacient.Pacient;
+import com.hospital_api.dto.appointment.AppointmentEditDTO;
 import com.hospital_api.dto.appointment.AppointmentRequestDTO;
 import com.hospital_api.infra.security.TokenService;
 import com.hospital_api.repository.AppointmentRepository;
@@ -75,5 +76,20 @@ public class AppointmentService {
             return appointment;
         }
         return null;
+    }
+
+    public Appointment editAppointment(AppointmentEditDTO data) {
+        Appointment appointment = appointmentRepository.findById(data.id()).orElseThrow(() -> new EntityNotFoundException("Appointment not found!"));
+        List<Medic> medics = new ArrayList<>();
+        data.medics().forEach(m -> {
+            Optional<Medic> medic = medicRepository.findById(m);
+            medic.ifPresent(medics::add);
+        });
+        medics.forEach(m -> {
+            if (!appointment.getMedics().contains(m)) {
+                appointment.getMedics().add(m);
+            }
+        });
+        return appointment;
     }
 }
