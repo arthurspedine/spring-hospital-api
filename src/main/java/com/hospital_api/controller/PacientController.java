@@ -2,6 +2,7 @@ package com.hospital_api.controller;
 
 import com.hospital_api.domain.pacient.Pacient;
 import com.hospital_api.dto.pacient.PacientDetailDTO;
+import com.hospital_api.dto.pacient.PacientEditDTO;
 import com.hospital_api.dto.pacient.PacientRequestDTO;
 import com.hospital_api.service.PacientService;
 import jakarta.transaction.Transactional;
@@ -35,5 +36,11 @@ public class PacientController {
         return ResponseEntity.ok(new PacientDetailDTO(service.getPacientById(id)));
     }
 
+    @PutMapping
+    @Transactional
+    public ResponseEntity<PacientDetailDTO> editPacient(@RequestBody @Valid PacientEditDTO data) {
+        Pacient pacient = service.editPacient(data);
+        return ResponseEntity.ok(new PacientDetailDTO(pacient));
+    }
 
 }

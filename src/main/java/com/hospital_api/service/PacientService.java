@@ -3,6 +3,7 @@ package com.hospital_api.service;
 import com.hospital_api.domain.pacient.Pacient;
 import com.hospital_api.domain.user.User;
 import com.hospital_api.domain.user.UserRole;
+import com.hospital_api.dto.pacient.PacientEditDTO;
 import com.hospital_api.dto.pacient.PacientRequestDTO;
 import com.hospital_api.repository.PacientRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -37,5 +38,11 @@ public class PacientService {
 
     public Pacient getPacientById(Long id) {
         return repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Pacient not found!"));
+    }
+
+    public Pacient editPacient(PacientEditDTO data) {
+        Pacient pacient = repository.findById(data.id()).orElseThrow(() -> new EntityNotFoundException("Pacient not found!"));
+        pacient.setName(data.name());
+        return pacient;
     }
 }

@@ -8,13 +8,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public record AppointmentDetailDTO(
-        PacientDetailDTO pacient,
+        PacientAppointmentDetailDTO pacient,
         List<MedicAppointmentDetailDTO> medics,
         LocalDateTime appointmentDate,
         String reason
 ) {
     public AppointmentDetailDTO(Appointment appointment) {
-        this(new PacientDetailDTO(appointment.getPacient()),
+        this(new PacientAppointmentDetailDTO(appointment.getPacient()),
                 appointment.getMedics().stream().map(MedicAppointmentDetailDTO::new).collect(Collectors.toList()),
                 appointment.getDateTime(),
                 appointment.getReason()
