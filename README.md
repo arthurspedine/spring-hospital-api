@@ -19,7 +19,7 @@ The program was developed to always create a ADMIN user with the credencials:
    password: 123
 ```
 
-### Checkout the Swagger Documentation to understand how the requests work and try your self the API locally
+### Check out the Swagger documentation to understand how the project work
 - http://localhost:8080/swagger-ui/index.html
 
 ## Support
