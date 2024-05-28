@@ -39,6 +39,8 @@ public class AppointmentService {
     @Autowired
     private UserRepository userRepository;
 
+    private final String notFound = "Appointment not found!";
+
     public Appointment scheduleAppointment(AppointmentRequestDTO data) {
         Pacient pacient = pacientRepository.findById(data.pacientId()).orElseThrow(() -> new EntityNotFoundException("Pacient not found!"));
         List<Medic> medics = new ArrayList<>();
@@ -65,7 +67,7 @@ public class AppointmentService {
 
         UserDetails user = userRepository.findByLogin(login);
 
-        Appointment appointment = appointmentRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Appointment not found!"));
+        Appointment appointment = appointmentRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(notFound));
 
         // CHECK IF IS ADMIN
         boolean isAdmin = user.getAuthorities().stream()
@@ -79,7 +81,7 @@ public class AppointmentService {
     }
 
     public Appointment editAppointment(AppointmentEditDTO data) {
-        Appointment appointment = appointmentRepository.findById(data.id()).orElseThrow(() -> new EntityNotFoundException("Appointment not found!"));
+        Appointment appointment = appointmentRepository.findById(data.id()).orElseThrow(() -> new EntityNotFoundException(notFound));
         List<Medic> medics = new ArrayList<>();
         data.medics().forEach(m -> {
             Optional<Medic> medic = medicRepository.findById(m);

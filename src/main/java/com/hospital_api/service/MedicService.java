@@ -30,6 +30,8 @@ public class MedicService {
     @Autowired
     private List<MedicValidationHandler> validations;
 
+    private final String notFound = "Medic not found!";
+
 
     public Medic saveMedic(MedicRequestDTO data) {
         validations.forEach(v -> v.validate(data));
@@ -51,7 +53,7 @@ public class MedicService {
     }
 
     public Medic getMedicById(Long id) {
-        return repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Medic not found!"));
+        return repository.findById(id).orElseThrow(() -> new EntityNotFoundException(notFound));
     }
 
     public Page<MedicDetailDTO> getAllMedics(Pageable page) {
@@ -59,7 +61,7 @@ public class MedicService {
     }
 
     public Medic editMedic(MedicEditDTO data) {
-        Medic medic = repository.findById(data.id()).orElseThrow(() -> new EntityNotFoundException("Medic not found!"));
+        Medic medic = repository.findById(data.id()).orElseThrow(() -> new EntityNotFoundException(notFound));
         medic.setName(data.name());
         return medic;
     }

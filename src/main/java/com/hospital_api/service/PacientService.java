@@ -20,6 +20,8 @@ public class PacientService {
     @Autowired
     private PasswordEncoder encoder;
 
+    private final String notFound = "Pacient not found!";
+
     public Pacient savePacient(PacientRequestDTO data) {
         Pacient pacient = new Pacient();
         pacient.setName(data.name());
@@ -37,11 +39,11 @@ public class PacientService {
     }
 
     public Pacient getPacientById(Long id) {
-        return repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Pacient not found!"));
+        return repository.findById(id).orElseThrow(() -> new EntityNotFoundException(notFound));
     }
 
     public Pacient editPacient(PacientEditDTO data) {
-        Pacient pacient = repository.findById(data.id()).orElseThrow(() -> new EntityNotFoundException("Pacient not found!"));
+        Pacient pacient = repository.findById(data.id()).orElseThrow(() -> new EntityNotFoundException(notFound));
         pacient.setName(data.name());
         return pacient;
     }

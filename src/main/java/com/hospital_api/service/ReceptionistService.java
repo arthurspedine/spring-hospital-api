@@ -30,6 +30,8 @@ public class ReceptionistService {
     @Autowired
     private List<ReceptionistValidationHandler> validations;
 
+    private final String notFound = "Receptionist not found!";
+
     public Receptionist saveReceptionist(ReceptionistRequestDTO data) {
         validations.forEach(v -> v.validate(data));
 
@@ -49,7 +51,7 @@ public class ReceptionistService {
     }
 
     public Receptionist getReceptionistById(Long id) {
-        return repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Receptionist not found!"));
+        return repository.findById(id).orElseThrow(() -> new EntityNotFoundException(notFound));
     }
 
     public Page<ReceptionistDetailDTO> getAllReceptionists(Pageable page) {
@@ -57,7 +59,7 @@ public class ReceptionistService {
     }
 
     public Receptionist editReceptionist(ReceptionistEditDTO data) {
-        Receptionist receptionist = repository.findById(data.id()).orElseThrow(() -> new EntityNotFoundException("Receptionist not found!"));
+        Receptionist receptionist = repository.findById(data.id()).orElseThrow(() -> new EntityNotFoundException(notFound));
         if (data.name() != null) {
             receptionist.setName(data.name());
         }
