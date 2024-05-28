@@ -1,5 +1,6 @@
 package com.hospital_api.controller;
 
+import com.hospital_api.dto.employee.medic.MedicEditDTO;
 import com.hospital_api.dto.employee.medic.MedicRequestDTO;
 import com.hospital_api.domain.employee.medic.Medic;
 import com.hospital_api.dto.employee.medic.MedicDetailDTO;
@@ -43,5 +44,12 @@ public class MedicController {
     @GetMapping
     public ResponseEntity<Page<MedicDetailDTO>> listAllMedics(@PageableDefault(sort = "name") Pageable page) {
         return ResponseEntity.ok(service.getAllMedics(page));
+    }
+
+    @PutMapping
+    @Transactional
+    public ResponseEntity<MedicDetailDTO> editMedic(@RequestBody @Valid MedicEditDTO data) {
+        Medic medic = service.editMedic(data);
+        return ResponseEntity.ok(new MedicDetailDTO(medic));
     }
 }

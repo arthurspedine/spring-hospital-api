@@ -1,6 +1,7 @@
 package com.hospital_api.service;
 
 import com.hospital_api.domain.employee.EmployeeType;
+import com.hospital_api.dto.employee.medic.MedicEditDTO;
 import com.hospital_api.dto.employee.medic.MedicRequestDTO;
 import com.hospital_api.domain.employee.medic.Medic;
 import com.hospital_api.domain.employee.validations.medic.MedicValidationHandler;
@@ -55,5 +56,11 @@ public class MedicService {
 
     public Page<MedicDetailDTO> getAllMedics(Pageable page) {
         return repository.findAll(page).map(MedicDetailDTO::new);
+    }
+
+    public Medic editMedic(MedicEditDTO data) {
+        Medic medic = repository.findById(data.id()).orElseThrow(() -> new EntityNotFoundException("Medic not found!"));
+        medic.setName(data.name());
+        return medic;
     }
 }
