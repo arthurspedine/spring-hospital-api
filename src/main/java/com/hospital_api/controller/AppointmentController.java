@@ -9,6 +9,9 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -53,5 +56,10 @@ public class AppointmentController {
     public ResponseEntity<AppointmentDetailDTO> editAppointment(@RequestBody @Valid AppointmentEditDTO data) {
         Appointment appointment = service.editAppointment(data);
         return ResponseEntity.ok(new AppointmentDetailDTO(appointment));
+    }
+
+    @GetMapping
+    public ResponseEntity<Page<AppointmentDetailDTO>> listAllAppointments(@PageableDefault(sort = "id") Pageable page) {
+        return ResponseEntity.ok(service.getAllAppointments(page));
     }
 }

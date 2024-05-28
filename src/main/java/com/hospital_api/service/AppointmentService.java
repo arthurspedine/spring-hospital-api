@@ -4,6 +4,7 @@ import com.hospital_api.domain.ValidationException;
 import com.hospital_api.domain.appointment.Appointment;
 import com.hospital_api.domain.employee.medic.Medic;
 import com.hospital_api.domain.pacient.Pacient;
+import com.hospital_api.dto.appointment.AppointmentDetailDTO;
 import com.hospital_api.dto.appointment.AppointmentEditDTO;
 import com.hospital_api.dto.appointment.AppointmentRequestDTO;
 import com.hospital_api.infra.security.TokenService;
@@ -13,6 +14,8 @@ import com.hospital_api.repository.PacientRepository;
 import com.hospital_api.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -93,5 +96,9 @@ public class AppointmentService {
             }
         });
         return appointment;
+    }
+
+    public Page<AppointmentDetailDTO> getAllAppointments(Pageable page) {
+        return appointmentRepository.findAll(page).map(AppointmentDetailDTO::new);
     }
 }
