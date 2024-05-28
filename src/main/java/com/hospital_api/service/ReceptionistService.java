@@ -2,6 +2,7 @@ package com.hospital_api.service;
 
 import com.hospital_api.domain.employee.EmployeeType;
 import com.hospital_api.domain.employee.receptionist.Receptionist;
+import com.hospital_api.dto.employee.receptionist.ReceptionistEditDTO;
 import com.hospital_api.dto.employee.receptionist.ReceptionistRequestDTO;
 import com.hospital_api.domain.employee.validations.receptionist.ReceptionistValidationHandler;
 import com.hospital_api.domain.user.User;
@@ -53,5 +54,16 @@ public class ReceptionistService {
 
     public Page<ReceptionistDetailDTO> getAllReceptionists(Pageable page) {
         return repository.findAll(page).map(ReceptionistDetailDTO::new);
+    }
+
+    public Receptionist editReceptionist(ReceptionistEditDTO data) {
+        Receptionist receptionist = repository.findById(data.id()).orElseThrow(() -> new EntityNotFoundException("Receptionist not found!"));
+        if (data.name() != null) {
+            receptionist.setName(data.name());
+        }
+        if (data.shiftType() != null) {
+            receptionist.setShift(data.shiftType());
+        }
+        return receptionist;
     }
 }

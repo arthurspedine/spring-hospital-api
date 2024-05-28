@@ -1,6 +1,7 @@
 package com.hospital_api.controller;
 
 import com.hospital_api.domain.employee.receptionist.Receptionist;
+import com.hospital_api.dto.employee.receptionist.ReceptionistEditDTO;
 import com.hospital_api.dto.employee.receptionist.ReceptionistRequestDTO;
 import com.hospital_api.dto.employee.receptionist.ReceptionistDetailDTO;
 import com.hospital_api.service.ReceptionistService;
@@ -43,6 +44,13 @@ public class ReceptionistController {
     @GetMapping
     public ResponseEntity<Page<ReceptionistDetailDTO>> listAllReceptionists(@PageableDefault(sort = "name") Pageable page) {
         return ResponseEntity.ok(service.getAllReceptionists(page));
+    }
+
+    @PutMapping
+    @Transactional
+    public ResponseEntity<ReceptionistDetailDTO> editReceptionist(@RequestBody @Valid ReceptionistEditDTO data) {
+        Receptionist receptionist = service.editReceptionist(data);
+        return ResponseEntity.ok(new ReceptionistDetailDTO(receptionist));
     }
 
 }
