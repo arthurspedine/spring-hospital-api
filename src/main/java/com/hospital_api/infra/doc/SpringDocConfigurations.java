@@ -23,7 +23,7 @@ public class SpringDocConfigurations {
                 .info(new Info()
                         .title("Hospital model RESTful API")
                         .description("RESTful API for a Hospital model, with CRUD of employees and patients, " +
-                                "in addition to scheduling and canceling an appointment")
+                                "in addition to scheduling an appointment")
                         .contact(new Contact()
                                 .name("Project Author")
                                 .email("spedinearthur@gmail.com")));
