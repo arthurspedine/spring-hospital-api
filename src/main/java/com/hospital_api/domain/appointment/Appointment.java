@@ -38,4 +38,6 @@ public class Appointment {
 
     private String reason;
 
+    private String cancellationReason;
+
 }

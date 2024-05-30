@@ -1,7 +1,6 @@
 package com.hospital_api.dto.appointment;
 
 import com.hospital_api.domain.appointment.Appointment;
-import com.hospital_api.dto.pacient.PacientDetailDTO;
 
 import java.time.LocalDateTime;
 import java.util.List;

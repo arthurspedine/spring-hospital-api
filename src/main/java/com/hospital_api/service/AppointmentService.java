@@ -7,6 +7,7 @@ import com.hospital_api.domain.pacient.Pacient;
 import com.hospital_api.dto.appointment.AppointmentDetailDTO;
 import com.hospital_api.dto.appointment.AppointmentEditDTO;
 import com.hospital_api.dto.appointment.AppointmentRequestDTO;
+import com.hospital_api.dto.appointment.CancelAppointmentDTO;
 import com.hospital_api.infra.security.TokenService;
 import com.hospital_api.repository.AppointmentRepository;
 import com.hospital_api.repository.MedicRepository;
@@ -85,6 +86,8 @@ public class AppointmentService {
 
     public Appointment editAppointment(AppointmentEditDTO data) {
         Appointment appointment = appointmentRepository.findById(data.id()).orElseThrow(() -> new EntityNotFoundException(notFound));
+        if (appointment.getCancellationReason() != null)
+            throw new ValidationException("This appointment is cancelled!");
         List<Medic> medics = new ArrayList<>();
         data.medics().forEach(m -> {
             Optional<Medic> medic = medicRepository.findById(m);
@@ -100,5 +103,13 @@ public class AppointmentService {
 
     public Page<AppointmentDetailDTO> getAllAppointments(Pageable page) {
         return appointmentRepository.findAll(page).map(AppointmentDetailDTO::new);
+    }
+
+
+    public void cancelAppointment(CancelAppointmentDTO data) {
+        Appointment appointment = appointmentRepository.findById(data.id()).orElseThrow(() -> new EntityNotFoundException(notFound));
+        if (appointment.getCancellationReason() != null)
+            throw new ValidationException("This appointment has already been cancelled!");
+        appointment.setCancellationReason(data.reason());
     }
 }

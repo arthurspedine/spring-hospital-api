@@ -1,9 +1,7 @@
 package com.hospital_api.controller;
 
 import com.hospital_api.domain.appointment.Appointment;
-import com.hospital_api.dto.appointment.AppointmentDetailDTO;
-import com.hospital_api.dto.appointment.AppointmentEditDTO;
-import com.hospital_api.dto.appointment.AppointmentRequestDTO;
+import com.hospital_api.dto.appointment.*;
 import com.hospital_api.service.AppointmentService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.transaction.Transactional;
@@ -39,16 +37,19 @@ public class AppointmentController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<AppointmentDetailDTO> scheduleDetail(
+    public ResponseEntity scheduleDetail(
             @PathVariable Long id,
             @RequestHeader(HttpHeaders.AUTHORIZATION) String authHeader) {
 
         if (authHeader == null || !authHeader.startsWith("Bearer "))
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         Appointment appointment = service.getAppointment(id, authHeader);
-        return appointment != null ?
-                ResponseEntity.ok(new AppointmentDetailDTO(appointment)) :
-                ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        if (appointment == null)
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+
+        if (appointment.getCancellationReason() != null)
+            return ResponseEntity.ok(new CancelledAppointmentDetailDTO(appointment));
+        return ResponseEntity.ok(new AppointmentDetailDTO(appointment));
     }
 
     @PutMapping
@@ -61,5 +62,13 @@ public class AppointmentController {
     @GetMapping
     public ResponseEntity<Page<AppointmentDetailDTO>> listAllAppointments(@PageableDefault(sort = "id") Pageable page) {
         return ResponseEntity.ok(service.getAllAppointments(page));
+    }
+
+    @DeleteMapping
+    @Transactional
+
+    public ResponseEntity cancelAppointment(@RequestBody @Valid CancelAppointmentDTO data) {
+        service.cancelAppointment(data);
+        return ResponseEntity.noContent().build();
     }
 }
