@@ -1,6 +1,6 @@
 # Spring Hospital API
 
-This project aimed to expand my knowledge of the Spring Boot Framework. The objective was to build a REST API for managing CRUD operations for Patients and Employees (including Medics and Receptionists), as well as scheduling Appointments. Additionally, I implemented Spring Security with JWT token for enhanced security measures. The API does not perform DELETE requests.
+This project aimed to expand my knowledge of the Spring Boot Framework. The objective was to build a REST API for managing CRUD operations for Patients and Employees (including Medics and Receptionists), as well as scheduling Appointments. Additionally, I implemented Spring Security with JWT token for enhanced security measures.
 
 ## Run Locally
 
